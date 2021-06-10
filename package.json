@@ -1,0 +1,27 @@
+{
+  "name": "chiji14exchange-technical-assessment",
+  "version": "1.0.0",
+  "description": "Technical Assessment for the role of Backend Developer at Chiji14xchange",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index",
+    "test": "jest --watchAll --coverage"
+  },
+  "keywords": [
+    "backend",
+    "nodejs",
+    "chiji14exchange",
+    "rest"
+  ],
+  "author": "Owolabi Tobiloba",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^27.0.4",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
+  }
+}
