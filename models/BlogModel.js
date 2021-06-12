@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const Comment = require("./CommentModel");
 
-const BlogSchema = new mongoose.Schema(
+const BlogSchema = Schema(
   {
+    _id: Schema.Types.ObjectId,
     title: {
       type: String,
       required: [true, "Please provide a title"],
@@ -21,12 +23,6 @@ const BlogSchema = new mongoose.Schema(
       minlength: [3, "Author name cannot be less than 3 characters"],
       maxlength: [50, "Author name cannot be more than 50 characters"],
     },
-    comments: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: "Comment",
-      },
-    ],
   },
   {
     timestamps: true,
@@ -35,10 +31,16 @@ const BlogSchema = new mongoose.Schema(
   }
 );
 
+BlogSchema.virtual("comments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "blog",
+  justOne: false,
+});
+
 BlogSchema.post("remove", (document) => {
   const blogID = document._id;
   Comment.remove({ blog: blogID }).exec();
-  next();
 });
 
 module.exports = mongoose.model("Blog", BlogSchema);

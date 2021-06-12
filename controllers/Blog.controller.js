@@ -3,6 +3,7 @@
  * @author Owolabi Tobiloba
  */
 
+const mongoose = require("mongoose");
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middlewares/async");
 const Blog = require("../models/BlogModel");
@@ -19,10 +20,8 @@ exports.getAllBlogs = asyncHandler(async (req, res, next) => {
 
 // Get all blog posts with comments
 exports.getAllBlogsWithComments = asyncHandler(async (req, res, next) => {
-  const blogs = await Blog.find().populate({
-    path: "comments",
-    model: Comment,
-  });
+  const blogs = await Blog.find().populate({ path: "comments" });
+
   res.status(200).json({
     success: true,
     data: blogs,
@@ -42,12 +41,12 @@ exports.getBlog = asyncHandler(async (req, res, next) => {
 
   const blog = await Blog.findById(blogID).populate({
     path: "comments",
-    model: Comment,
   });
 
   if (!blog) {
     return next(new ErrorResponse("Blog not found", 404));
   }
+
   res.status(201).json({
     success: true,
     blog,
@@ -62,6 +61,7 @@ exports.createBlog = asyncHandler(async (req, res, next) => {
    */
   const { title, body, author } = req.body;
   const blog = await Blog.create({
+    _id: new mongoose.Types.ObjectId(),
     title,
     body,
     author,
@@ -137,6 +137,7 @@ exports.deleteBlog = asyncHandler(async (req, res, next) => {
   }
 
   const blog = await Blog.findById(blogID);
+  console.log(blog);
 
   if (!blog) {
     return next(
@@ -147,7 +148,7 @@ exports.deleteBlog = asyncHandler(async (req, res, next) => {
     );
   }
 
-  Blog.deleteOne(blog);
+  await blog.remove();
 
   res.status(200).json({
     success: true,

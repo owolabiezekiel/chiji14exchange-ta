@@ -1,18 +1,16 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const CommentSchema = new mongoose.Schema(
+const CommentSchema = Schema(
   {
-    blog: {
-      type: mongoose.Schema.ObjectId,
-      ref: "Blog",
-    },
-    comment_body: {
+    blog: { type: Schema.Types.ObjectId, ref: "Person" },
+    commentBody: {
       type: String,
-      required: [true, "Please provide a blog body"],
-      minlength: [30, "Blog text cannot be less than 30 characters"],
-      maxlength: [1000, "Author name cannot be less than 1000 characters"],
+      required: [true, "Please provide comment body"],
+      minlength: [1, "Comment body cannot be less than 1 character"],
+      maxlength: [1000, "Comment body cannot be more than 1000 characters"],
     },
-    comment_author: {
+    commentAuthor: {
       type: String,
       required: [true, "Please provide comment author name"],
       minlength: [3, "Comment author name cannot be less than 3 characters"],
