@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Comment = require("./CommentModel");
 
 const BlogSchema = new mongoose.Schema(
   {
@@ -33,5 +34,11 @@ const BlogSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+BlogSchema.post("remove", (document) => {
+  const blogID = document._id;
+  Comment.remove({ blog: blogID }).exec();
+  next();
+});
 
 module.exports = mongoose.model("Blog", BlogSchema);
