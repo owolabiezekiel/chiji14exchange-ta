@@ -39,7 +39,7 @@ exports.getBlog = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Please provide blog ID", 400));
   }
 
-  const blog = await Blog.findById(blogID);
+  const blog = await Blog.findById(blogID).populate({ path: "comments" });
 
   if (!blog) {
     return next(new ErrorResponse("Blog not found", 404));
