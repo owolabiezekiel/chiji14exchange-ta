@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require("path");
 const colors = require("colors");
 const errorHander = require("./middlewares/error");
 
@@ -12,6 +13,9 @@ const commentRoutes = require("./routes/commentRoute");
 
 const app = express();
 app.use(express.json());
+
+// Set static folder
+app.use(express.static(path.join(__dirname, "public")));
 
 // Mount routers
 app.use("/api/v1/blog", blogRoutes);
