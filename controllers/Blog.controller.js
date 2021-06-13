@@ -45,9 +45,9 @@ exports.getBlog = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Blog not found", 404));
   }
 
-  res.status(201).json({
+  res.status(200).json({
     success: true,
-    blog,
+    data: blog,
   });
 });
 
@@ -119,7 +119,7 @@ exports.updateBlog = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    state: updatedBlog,
+    blog: updatedBlog,
   });
 });
 
@@ -135,7 +135,6 @@ exports.deleteBlog = asyncHandler(async (req, res, next) => {
   }
 
   const blog = await Blog.findById(blogID);
-  console.log(blog);
 
   if (!blog) {
     return next(
